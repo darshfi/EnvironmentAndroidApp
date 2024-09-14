@@ -8,17 +8,23 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.envii.ui.theme.EnviiTheme
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val authViewModel : AuthViewModel by viewModels()
+
+        if (!isCameraPermissionGranted()) {
+            requestCameraPermission()
+        }
+
         setContent {
             EnviiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -26,5 +32,22 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun isCameraPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this, Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            this, CAMERA_PERMISSION, CAMERA_PERMISSION_CODE
+        )
+    }
+
+    companion object {
+        private val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
+        private const val CAMERA_PERMISSION_CODE = 1001
     }
 }

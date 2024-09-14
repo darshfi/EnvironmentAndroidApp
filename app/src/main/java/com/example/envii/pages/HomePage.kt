@@ -39,6 +39,8 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
         }
     }
 
+
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
