@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "252076249120",
+    "project_id": "envii-6911",
+    "storage_bucket": "envii-6911.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252076249120:android:2579229599b2e5df9eac45",
+        "android_client_info": {
+          "package_name": "com.example.envii"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwy6gL5KqJy1DZ2l43LbNLygWeG3l3XEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
