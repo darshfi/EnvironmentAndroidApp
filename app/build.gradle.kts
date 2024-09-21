@@ -54,6 +54,9 @@ android {
 
 dependencies {
 
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.gpu)
+    implementation(libs.tensorflow.lite.support)
     implementation(libs.coil.compose)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.camera.core)

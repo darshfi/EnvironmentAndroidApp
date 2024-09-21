@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
         if(!arePermissionsGranted()){
             ActivityCompat.requestPermissions(
-                this, CAMERA_PERMISSION, 100
+                this, REQUIRED_PERMISSIONS, 100
             )
         }
 
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun arePermissionsGranted(): Boolean {
-        return CAMERA_PERMISSION.all { permission ->
+        return REQUIRED_PERMISSIONS.all { permission ->
             ContextCompat.checkSelfPermission(
                 applicationContext,
                 permission
@@ -48,8 +48,10 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        val CAMERA_PERMISSION = arrayOf(
-            Manifest.permission.CAMERA
+        val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
 }

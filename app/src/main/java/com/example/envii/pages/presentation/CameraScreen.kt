@@ -3,6 +3,7 @@ package com.example.envii.pages.presentation
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
@@ -28,7 +29,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +57,9 @@ fun CameraScreen(
             setEnabledUseCases(CameraController.IMAGE_CAPTURE)
         }
     }
+
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var showPreview by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -113,7 +120,12 @@ fun CameraScreen(
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable {
                         if((activity as MainActivity).arePermissionsGranted()){
-                            cameraViewModel.onTakePhoto(controller)
+                            Log.d("AiModel", "CLicked")
+                            cameraViewModel.takePhoto(controller) { uri ->
+                                imageUri = uri
+                                showPreview = true
+                            }
+                            Log.d("AiModel", "onTakePhoto should be done")
                         }
                     },
                 contentAlignment = Alignment.Center
@@ -169,5 +181,12 @@ fun CameraScreen(
                 )
             }
         }
+
+        if (showPreview && imageUri != null) {
+            ImagePreview(imageUri) {
+                showPreview = false
+            }
+        }
+
     }
 }

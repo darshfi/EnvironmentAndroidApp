@@ -1,0 +1,111 @@
+Box(
+    modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Black)
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(imageUrls.size) { index ->
+                ImageCard(
+                    title = "Random Image ${index + 1}",
+                    description = "This is a random image from Firebase.",
+                    imageUrl = imageUrls[index]
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .size(45.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Open Settings",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .size(45.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "Shopping Cart",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 18.dp)
+                .align(Alignment.BottomCenter),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .size(45.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+
+                    },
+                contentAlignment = Alignment.Center
+            ){
+                Icon(
+                    imageVector = Icons.Default.PhotoLibrary,
+                    contentDescription = "Open Camera",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(1.dp))
+
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .size(45.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+                        navController.navigate("home")
+                    },
+                contentAlignment = Alignment.Center
+            ){
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Go Home",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+        }
+    }
+}
