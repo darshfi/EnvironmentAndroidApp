@@ -16,14 +16,14 @@ private val DarkColorScheme = darkColorScheme(
     primary = Green80,
     secondary = GreenGrey80,
     tertiary = Green80,
-    onPrimary = Color.Black
+    onPrimary = Green40
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Green40,
     secondary = GreenGrey50,
     tertiary = Green80,
-    onPrimary = Color.Black
+    onPrimary = Green80
 )
 
 @Composable

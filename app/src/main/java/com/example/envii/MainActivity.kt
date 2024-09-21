@@ -14,40 +14,42 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val authViewModel : AuthViewModel by viewModels()
 
-        if (!isCameraPermissionGranted()) {
-            requestCameraPermission()
+        if(!arePermissionsGranted()){
+            ActivityCompat.requestPermissions(
+                this, CAMERA_PERMISSION, 100
+            )
         }
 
         setContent {
             EnviiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyAppNavigation(modifier = Modifier.padding(innerPadding), authViewModel = authViewModel)
+                    MyAppNavigation(modifier = Modifier.padding(innerPadding), authViewModel = authViewModel,this)
                 }
             }
         }
     }
 
-    private fun isCameraPermissionGranted(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this, Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(
-            this, CAMERA_PERMISSION, CAMERA_PERMISSION_CODE
-        )
+    fun arePermissionsGranted(): Boolean {
+        return CAMERA_PERMISSION.all { permission ->
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     companion object {
-        private val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
-        private const val CAMERA_PERMISSION_CODE = 1001
+        val CAMERA_PERMISSION = arrayOf(
+            Manifest.permission.CAMERA
+        )
     }
 }

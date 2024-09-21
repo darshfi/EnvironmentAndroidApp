@@ -1,5 +1,6 @@
 package com.example.envii.pages
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.envii.AuthState
 import com.example.envii.AuthViewModel
 import com.example.envii.ui.theme.*
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun HomePage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
@@ -63,7 +65,6 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
 
         FloatingActionButton(
             onClick = {
-                // Navigate to the camera screen
                 navController.navigate("camera")
             },
             modifier = Modifier
@@ -72,7 +73,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
             containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
-                imageVector = Icons.Default.CameraAlt, // Use a camera icon
+                imageVector = Icons.Default.CameraAlt,
                 contentDescription = "Open Camera",
                 tint = Color.White
             )

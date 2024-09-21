@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.daggerHilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -52,14 +54,21 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.accompanist.staggered.grid)
+    implementation(libs.coil.compose)
+    implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.video)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
+    implementation(libs.dagger.hilt)
+    implementation(libs.firebase.storage)
+    implementation(libs.androidx.benchmark.macro)
+    kapt(libs.dagger.hilt.compiler)
+    kapt(libs.dagger.hilt.androidx)
+    implementation(libs.dagger.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
