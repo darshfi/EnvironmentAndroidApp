@@ -42,7 +42,10 @@ import androidx.navigation.NavController
 import com.example.envii.AuthState
 import com.example.envii.AuthViewModel
 import com.example.envii.R
-import com.example.envii.ui.theme.*
+import com.example.envii.ui.theme.Green80
+import com.example.envii.ui.theme.GreenGrey30
+import com.example.envii.ui.theme.GreenGrey50
+import com.example.envii.ui.theme.GreenGrey60
 
 @Composable
 fun SignupPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {

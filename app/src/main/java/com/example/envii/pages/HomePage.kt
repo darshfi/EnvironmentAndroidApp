@@ -51,7 +51,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
     val authState = authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState.value) {
-        when(authState.value) {
+        when (authState.value) {
             is AuthState.UnAuthenticated -> {
                 navController.navigate("login")
             }
@@ -59,7 +59,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
         }
     }
 
-    var isFav by remember{ mutableStateOf(false) }
+    var isFav by remember { mutableStateOf(false) }
     val imageUri = CameraRepositoryImpl.imageMediaStoreUri.toString()
 
     Log.e("HomePage", "Image URI: $imageUri")
@@ -70,9 +70,10 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Button(onClick = {
-            authViewModel.signout()
-        },
+        Button(
+            onClick = {
+                authViewModel.signout()
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Green80,
                 contentColor = Color.Black,
@@ -143,7 +144,7 @@ fun ImageCard(
 ) {
     Card(
         modifier = Modifier
-            //.clickable(onClick = onClick),
+        //.clickable(onClick = onClick),
 
         ,
         colors = CardDefaults.cardColors(
@@ -186,7 +187,7 @@ fun ImageCard(
                     ),
                     leadingIcon = {
                         Icon(
-                            imageVector = if(isFav){
+                            imageVector = if (isFav) {
                                 Icons.Filled.Favorite
                             } else {
                                 Icons.Outlined.FavoriteBorder

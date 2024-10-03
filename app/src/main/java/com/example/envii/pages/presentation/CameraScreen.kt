@@ -113,7 +113,7 @@ fun CameraScreen(
                     .size(45.dp)
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable {
-                        if((activity as MainActivity).arePermissionsGranted()){
+                        if ((activity as MainActivity).arePermissionsGranted()) {
                             cameraViewModel.onTakePhoto(controller)
 
                             Handler(Looper.getMainLooper()).postDelayed({
@@ -138,9 +138,9 @@ fun CameraScreen(
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable {
                         controller.cameraSelector =
-                            if(controller.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                            if (controller.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
                                 CameraSelector.DEFAULT_FRONT_CAMERA
-                            } else{
+                            } else {
                                 CameraSelector.DEFAULT_BACK_CAMERA
                             }
                     },

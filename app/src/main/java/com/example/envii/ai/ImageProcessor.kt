@@ -21,7 +21,8 @@ object ImageProcessor {
 
     fun preprocessImage(bitmap: Bitmap): ByteBuffer {
         val imgSize = 224  // Model expects a 224x224 input
-        val byteBuffer = ByteBuffer.allocateDirect(4 * imgSize * imgSize * 3)  // Allocate buffer for RGB values
+        val byteBuffer =
+            ByteBuffer.allocateDirect(4 * imgSize * imgSize * 3)  // Allocate buffer for RGB values
         byteBuffer.order(ByteOrder.nativeOrder())  // Set byte order to native
 
         // Scale the bitmap to the required size

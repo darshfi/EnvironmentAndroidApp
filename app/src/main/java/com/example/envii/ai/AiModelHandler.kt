@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
-import java.nio.ByteBuffer
 
 class AiModelHandler(context: Context) {
 

@@ -104,7 +104,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, navController: NavController) {
                 .align(Alignment.BottomCenter),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(14.dp))
@@ -156,7 +156,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, navController: NavController) {
     }
 }
 
-private fun cloudCon(imageUri: Uri){
+private fun cloudCon(imageUri: Uri) {
     val user = FirebaseAuth.getInstance().currentUser
     val userId = user?.uid
     if (userId == null) {

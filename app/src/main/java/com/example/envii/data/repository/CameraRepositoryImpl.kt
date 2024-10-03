@@ -40,9 +40,9 @@ class CameraRepositoryImpl @Inject constructor(
 
                     val imageBitmap: Bitmap = Bitmap.createBitmap(
                         image.toBitmap(),
-                        0,0,
+                        0, 0,
                         image.width, image.height,
-                        matrix,true
+                        matrix, true
                     )
 
                     CoroutineScope(Dispatchers.IO).launch {
@@ -61,7 +61,7 @@ class CameraRepositoryImpl @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private suspend fun savePhoto(bitmap: Bitmap){
+    private suspend fun savePhoto(bitmap: Bitmap) {
         withContext(Dispatchers.IO) {
             val resolver: ContentResolver = application.contentResolver
 

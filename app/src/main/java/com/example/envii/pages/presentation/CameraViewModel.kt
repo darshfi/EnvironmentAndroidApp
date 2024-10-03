@@ -1,6 +1,5 @@
 package com.example.envii.pages.presentation
 
-import android.graphics.Bitmap
 import androidx.camera.view.LifecycleCameraController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val cameraRepository: CameraRepository
-): ViewModel() {
+) : ViewModel() {
     fun onTakePhoto(
         controller: LifecycleCameraController
     ) {
