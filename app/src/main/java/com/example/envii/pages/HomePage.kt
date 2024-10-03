@@ -2,15 +2,35 @@ package com.example.envii.pages
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,58 +40,44 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.envii.AuthState
 import com.example.envii.AuthViewModel
+import com.example.envii.data.repository.CameraRepositoryImpl
+import com.example.envii.ui.theme.Green80
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ListResult
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.ktx.Firebase
 import kotlin.random.Random
 
-@ExperimentalMaterial3Api
 @Composable
 fun HomePage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     val authState = authViewModel.authState.observeAsState()
-    var imageUrl by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(authState.value, Unit) {
-        when (authState.value) {
+    LaunchedEffect(authState.value) {
+        when(authState.value) {
             is AuthState.UnAuthenticated -> {
                 navController.navigate("login")
             }
             else -> Unit
         }
-
-        getLatestImage { url ->
-            imageUrl = url
-        }
     }
+
+    var isFav by remember{ mutableStateOf(false) }
+    val imageUri = CameraRepositoryImpl.imageMediaStoreUri.toString()
+
+    Log.e("HomePage", "Image URI: $imageUri")
 
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Display the latest image
-        ImageCard(
-            title = "Latest Upload",
-            description = "This is the most recent image uploaded.",
-            imageUrl = imageUrl,
-            onClick = {
-                navController.navigate("ImageFeed")
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
             authViewModel.signout()
         },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = Green80,
+                contentColor = Color.Black,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
+                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.38f)
             )
         ) {
             Text(text = "Sign Out")
@@ -79,8 +85,34 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
 
         Spacer(modifier = Modifier.weight(1f))
 
+        ImageCard(
+            title = "Title",
+            description = "Description",
+            imageUrl = imageUri,
+            isFav = isFav,
+            onFavChange = { isFav = it }
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(onClick = {
+            navController.navigate("preview")
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
+                disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.38f)
+            )
+        ) {
+            Text(text = "Preview")
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
         FloatingActionButton(
             onClick = {
+                // Navigate to the camera screen
                 navController.navigate("camera")
             },
             modifier = Modifier
@@ -89,7 +121,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
             containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
-                imageVector = Icons.Default.CameraAlt,
+                imageVector = Icons.Default.CameraAlt, // Use a camera icon
                 contentDescription = "Open Camera",
                 tint = Color.White
             )
@@ -101,13 +133,19 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, authVi
 fun ImageCard(
     title: String,
     description: String,
-    imageUrl: String?, // Accept imageUrl as a parameter
-    modifier: Modifier = Modifier,
+    imageUrl: String?,
+    isFav: Boolean,
+    onFavChange: (Boolean) -> Unit
+    /*
+    modifier: Modifier = Modifier
     onClick: () -> Unit = {}
+     */
 ) {
     Card(
-        modifier = modifier
-            .clickable(onClick = onClick),
+        modifier = Modifier
+            //.clickable(onClick = onClick),
+
+        ,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
@@ -121,7 +159,7 @@ fun ImageCard(
             modifier = Modifier
                 .clip(MaterialTheme.shapes.large)
                 .fillMaxWidth()
-                .aspectRatio(3f / 2f)
+                .aspectRatio(3f / 3f)
         )
         Column(
             modifier = Modifier.padding(16.dp)
@@ -142,60 +180,25 @@ fun ImageCard(
                 mainAxisSize = SizeMode.Wrap
             ) {
                 AssistChip(
-                    onClick = { },
+                    onClick = { onFavChange(!isFav) },
                     colors = AssistChipDefaults.assistChipColors(
                         leadingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.FavoriteBorder,
+                            imageVector = if(isFav){
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
                             contentDescription = null
                         )
                     },
                     label = {
-                        Text(text = "Mark as favorite")
-                    }
-                )
-                AssistChip(
-                    onClick = { },
-                    colors = AssistChipDefaults.assistChipColors(
-                        leadingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Share,
-                            contentDescription = null
-                        )
-                    },
-                    label = {
-                        Text(text = "Share with others")
+                        Text(text = "Like")
                     }
                 )
             }
         }
-    }
-}
-
-fun getLatestImage(callback: (String?) -> Unit) {
-    val user = FirebaseAuth.getInstance().currentUser
-    val userId = user?.uid
-    val storage: FirebaseStorage = Firebase.storage
-    val folderPath = "images/$userId/"
-    val storageRef: StorageReference = storage.reference.child(folderPath)
-
-    storageRef.listAll().addOnSuccessListener { listResult: ListResult ->
-        val items = listResult.items
-        if (items.isNotEmpty()) {
-            val latestImage = items.maxByOrNull { it.name }
-            latestImage?.downloadUrl?.addOnSuccessListener { uri ->
-                callback(uri.toString())
-            }?.addOnFailureListener {
-                callback(null)
-            }
-        } else {
-            callback(null)
-        }
-    }.addOnFailureListener {
-        callback(null)
     }
 }
